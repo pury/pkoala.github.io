@@ -38,7 +38,7 @@ window.pkoala = window.pkoala || {};
 		var imageUrl = nodeData.image;
 		if (imageUrl.indexOf("data:image") == 0) { imageUrl = ""}
 		$("#node-image").val(imageUrl);
-		$("#node-image-show").attr('src', nodeData.image || "http://purystudio.com/images/default.jpeg");
+		$("#node-image-show").attr('src', nodeData.image || "https://pury.github.io/nrd/images/default.jpeg");
 		$("#node-size").val(nodeData.size);
 		pkoala.editor.id = nodeData.id;
 		pkoala.editor.updateRelation();

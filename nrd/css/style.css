@@ -1,0 +1,116 @@
+
+.main-content {
+	width: 100%;
+	height: 100%;
+}
+
+.sidebar {
+	position: fixed;
+	top: 50px;
+	right: 50px;
+	background-color: #f6f6f6;
+	padding: 20px 5px 5px 5px;
+}
+
+.sidebar-item {
+	text-align: center;
+	width: 50px;
+	height: 50px;
+	/*border-bottom: 1px solid white;*/
+}
+
+.sidebar-item span {
+	font-size: 24px;
+	/*background-color: red;*/
+}
+
+.node-list {
+    margin-top: 5px;
+    border-right: 1px solid #ddd;
+}
+
+.node-editor {
+	margin-left: -1px;
+}
+
+.node-editor-body {
+	height: 480px;
+}
+
+#node-image-show {
+	width: 80px;
+	height: 80px;
+}
+
+#form-base {
+	margin-top: 10px;
+}
+
+#form-relation {
+	margin-top: 10px;
+}
+
+#node-editor .modal-dialog{
+	width: 50%;
+}
+
+#sidebar-add{
+	padding-left: 0;
+	list-style:none;
+	margin-bottom: 0;
+}
+
+
+#sidebar-add li {
+	height: 50px;
+	padding-top: 15px;
+}
+
+#node-ul {
+	padding-left: 0;
+	list-style:none;
+}
+
+#node-ul li {
+	height: 50px;
+	padding-top: 5px;
+}
+
+#node-ul li img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+#node-ul li .avatar {
+  padding-top: 5px;
+  text-align: right;
+}
+
+#node-ul li a {
+  padding-top: 10px;
+}
+
+.sidebar-ul > .active,
+.sidebar-ul > .active:hover,
+.sidebar-ul > .active:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+.sidebar-ul > .active > a,
+.sidebar-ul > .active > a:hover,
+.sidebar-ul > .active > a:focus {
+  color: #fff;
+}
+
+#node-image-show-wm {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  border: 1px solid #D3D3D3;
+}
+
+#help .modal-body{
+	padding: 20px 100px;
+}

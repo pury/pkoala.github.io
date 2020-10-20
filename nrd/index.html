@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <title>Pkoala Studio</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+ 	 <iframe id="page-chart" class="main-content" frameborder="no" src="./tp.html"></iframe>
+ 	 <!-- <iframe id="page-chart" class="main-content" frameborder="no" src="http://0.0.0.0:9008/"></iframe> -->
+
+ 	 <div class="sidebar">
+ 	 	<div class="sidebar-item" data-toggle="tooltip" title="编辑"><a href="#" data-toggle="modal" data-target="#node-editor"><span class="glyphicon glyphicon-align-justify"></span></a></div>
+ 	 	<div class="sidebar-item" data-toggle="tooltip" title="导出"><a onclick="doExport()" href="#"><span class="glyphicon glyphicon-export"></span></a></div>
+ 	 	<div class="sidebar-item" data-toggle="tooltip" title="重置"><a onclick="doReset()" href="#"><span class="glyphicon glyphicon-repeat"></span></a></div>
+    <div class="sidebar-item" data-toggle="tooltip" title="设置"><a onclick="doSet()" data-toggle="modal" data-target="#setting" href="#"><span class="glyphicon glyphicon-cog"></span></a></div>
+ 	 	<div class="sidebar-item" data-toggle="tooltip" title="关于"><a onclick="" data-toggle="modal" data-target="#help" href="#"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+ 	 </div>
+
+    <!-- loading -->
+    <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            拼命加载中...<span id="result"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <!-- node - editor -->
+    <div class="modal fade" id="node-editor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">编辑节点</h4>
+          </div>
+          <div class="modal-body node-editor-body">
+          	<div class="col-md-3 node-list row pre-scrollable">
+          		<ul id="sidebar-add" class="sidebar-ul">
+          			<li class="text-center"><a href="#"><span class="glyphicon glyphicon-plus"></span>新建</a></li>
+          		</ul>
+          		<ul id="node-ul" class="sidebar-ul">
+          			<li >1</li>
+          		</ul>
+          	</div>
+          	<div class="col-md-9 node-editor">
+          		
+		        <ul class="nav nav-tabs">
+		          <li id="tab-base" role="presentation" class="active" onclick="showTab('tab-base');"><a href="#">基础</a></li>
+		          <li id="tab-relation" role="presentation" onclick="showTab('tab-relation');"><a href="#">关系</a></li>
+		          <li id="tab-advance" role="presentation" onclick="showTab('tab-advance');"><a href="#">高级</a></li>
+		        </ul>
+				<form  id="form-base" class="form-horizontal row pre-scrollable" >
+						<div class="form-group" style="margin-left: 0; margin-right: 0">
+							<label class="col-sm-2 control-label">编号</label>
+							<div class="col-sm-7">
+								<p class="form-control-static" id="node-id">0</p>
+							</div>
+	           		 		<div class="col-sm-2"><button id="btn-delete" type="button" class="btn btn-link">删除节点</button></div>
+						</div>
+					    <div class="form-group" style="margin-left: 0; margin-right: 0">
+					        <label for="inputEmail3" class="col-sm-2 control-label">名称</label>
+					        <div class="col-sm-10">
+					            <input type="text" class="form-control" id="node-name" placeholder=""></div>
+					    </div>
+					    <div class="form-group" style="margin-left: 0; margin-right: 0">
+					        <label for="inputPassword3" class="col-sm-2 control-label">简介</label>
+					        <div class="col-sm-10">
+					            <input type="text" class="form-control" id="node-role" placeholder=""></div>
+					    </div>
+
+			            <div  class="form-group" style="margin-left: 0; margin-right: 0">
+			                <label for="inputPassword3" class="col-sm-2 control-label">头像</label>
+			                <div class="col-sm-10">
+			                  <img id="node-image-show" src="" />
+			                  <input type="file" class="form-control" style="display:none;" id="node-image-source" value="上传" accept="image/*" >
+			                  <div>
+			                    
+			                  <div class="col-sm-9" style="padding:0px;margin-top:10px" >
+			                  <input type="text" class="form-control" id="node-image" placeholder="https:// 支持网络图片">
+			                  </div>
+			                  <div class="col-sm-3" style="margin-top:12px" >
+			                  <button id="btn-upload" class="">浏览</button>
+			                  </div>
+			                  </div>
+			                </div>
+			            </div>
+			            <div class="form-group" style="margin-left: 0; margin-right: 0">
+			                <label for="inputPassword3" class="col-sm-2 control-label">尺寸</label>
+			                <div class="col-sm-6">
+			                  <select id="node-size">
+			                    <option value="normal">默认</option>
+			                    <option value="large">大</option>
+			                    <option value="small">小</option>
+			                  </select> </div>
+			            </div>
+					    <div class="form-group" style="margin-left: 0; margin-right: 0">
+					        <div class="col-sm-offset-2 col-sm-10">
+					            <button id="btn-save" type="submit" class="btn btn-primary">保存</button></div>
+					    </div>
+				</form>
+
+		        <form id='form-relation' class="form-horizontal row pre-scrollable" style="display:none" >
+		            <div class="form-group" style="margin-left: 0; margin-right: 0">
+		                <label for="inputEmail3" class="col-sm-3 control-label">名称</label>
+		                <div class="col-sm-9">
+		                    <input type="text" class="form-control" id="node-name" placeholder=""></div>
+		            </div> 
+
+		        </form>
+          	</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- setting -->
+    <div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">设置</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-4 control-label">小工具</label>
+                <div class="col-sm-8">
+                  <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions-tools" id="inlineRadio1-tools" value="on"> 打开
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions-tools" id="inlineRadio2-tools" checked value="off"> 关闭
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-4 control-label">本地缓存</label>
+                <div class="col-sm-8">
+                  <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" checked value="on"> 打开
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="off"> 关闭
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword3" class="col-sm-4 control-label">水印</label>
+                <div class="col-sm-8">
+                  <img id="node-image-show-wm" src='./watermark.png' />
+                  <input type="file" class="form-control" style="display:none;" id="node-image-source-wm" value="上传" accept="image/*" ><br>
+                  <button id="btn-upload-wm" class="">上传</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+            <button id="btn-watermark" type="button" class="btn btn-primary">保存</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- help -->
+    <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">关于</h4>
+          </div>
+          <div class="modal-body">
+            <div><label>Node Relationship Diagram</label></div>
+            在线编辑人物节点关系图谱
+            <br/>
+            <br/>
+            <div>支持：</div>
+            <ul>
+              <li>编辑节点信息</li>
+              <li>配置关系</li>
+              <li>导出图片</li>
+              <li>自定义水印</li>
+              <li>本地缓存</li>
+            </ul>
+            更多功能敬请期待。
+            <br/>
+            <br/>
+             <div>在线地址: https://pury.github.io/nrd</div>
+             <div>Github: https://github.com/pury/pury.github.io/tree/main/nrd</div>
+             <div>感谢：https://github.com/hepeng10/roc-charts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>window.jQuery || document.write('<script src="bootstrap/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/nodes-sidebar.js" type="text/javascript"></script>
+    <script src="js/nodes-editor.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+
+  </body>
+</html>

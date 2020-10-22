@@ -10,6 +10,10 @@ window.pkoala = window.pkoala || {};
  */
 var PKOALA_CHART = 'pkoala-chart';
 /**
+ * 模式
+ */
+var PKOALA_MODE = "pkoala-mode";
+/**
  * 小工具
  */
 var PKOALA_TOOLS = "pkoala-tools";
@@ -18,6 +22,7 @@ var PKOALA_TOOLS = "pkoala-tools";
  */
 var PKOALA_ARCHIVE = "pkoala-archive";
 
+pkoala.mode = 0;
 pkoala.tools = false;
 pkoala.archive = false;
 
@@ -42,6 +47,12 @@ window.onload = function () {
 }
 
 var checkSet = function () {
+	$("input:radio[name='set-mode']").change(function (item) {
+		localStorage.setItem(PKOALA_MODE, this.value);
+		pkoala.mode = this.value == "on" ? 0 : 1;
+		$("#page-chart")[0].contentWindow.postMessage({type: 'mode', data: {mode: pkoala.mode}}, "*");
+		$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.chartData}, "*");
+	});
 	$("input:radio[name='inlineRadioOptions-tools']").change(function (item) {
 		localStorage.setItem(PKOALA_TOOLS, this.value);
 		pkoala.tools = this.value == "on";
@@ -52,8 +63,11 @@ var checkSet = function () {
 		pkoala.archive = this.value == "on";
 	});
 
+	var tempMode = localStorage.getItem(PKOALA_MODE) || "on";
+	pkoala.mode = tempMode == "on" ? 0 : 1;
 	pkoala.tools = localStorage.getItem(PKOALA_TOOLS) == "on";
 	pkoala.archive = localStorage.getItem(PKOALA_ARCHIVE) == "on";
+	$("#page-chart")[0].contentWindow.postMessage({type: 'mode', data: {show: pkoala.mode}}, "*");
 	$("#page-chart")[0].contentWindow.postMessage({type: 'tools', data: {show: pkoala.tools}}, "*");
 }
 
@@ -147,10 +161,14 @@ function doReset()
 
 function doSet()
 {
+	var mode = (localStorage.getItem(PKOALA_MODE) || "on") == "on" ? 0 : 1;	
 	var tools = localStorage.getItem(PKOALA_TOOLS) == "on";	
 	var archive = localStorage.getItem(PKOALA_ARCHIVE) == "on";
+	pkoala.mode = mode;
 	pkoala.tools = tools;
 	pkoala.archive = archive;
+	$("input:radio[name='set-mode'][value='on']").prop('checked', mode == 0);
+	$("input:radio[name='set-mode'][value='off']").prop('checked', mode == 1);
 	$("input:radio[name='inlineRadioOptions-tools'][value='on']").prop('checked', tools);
 	$("input:radio[name='inlineRadioOptions-tools'][value='off']").prop('checked', !tools);
 	$("input:radio[name='inlineRadioOptions'][value='on']").prop('checked', archive);

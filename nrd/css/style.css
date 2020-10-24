@@ -34,7 +34,7 @@
 }
 
 .node-editor-body {
-	height: 480px;
+	height: 500px;
 }
 
 #node-image-show {
@@ -51,7 +51,7 @@
 }
 
 #node-editor .modal-dialog{
-	width: 50%;
+	width: 80%;
 }
 
 #sidebar-add{
@@ -113,4 +113,8 @@
 
 #help .modal-body{
 	padding: 20px 100px;
+}
+
+.pre-scrollable {
+	max-height: 380px;
 }

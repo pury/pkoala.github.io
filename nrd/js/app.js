@@ -34,8 +34,7 @@ var updateChartData = function (launch) {
     pkoala.sidebar.init(pkoala.chartData); 
     // if (!launch) return;
     drawChartData();
-    if (!pkoala.archive) return;
-	localStorage.setItem(PKOALA_CHART, JSON.stringify(pkoala.chartData));
+    saveArchive();
 };
 
 var initFlag = 0;

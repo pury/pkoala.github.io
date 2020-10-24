@@ -40,7 +40,7 @@ window.pkoala = window.pkoala || {};
 		$("#node-image").val(imageUrl);
 		$("#node-image-show").attr('src', nodeData.image || "https://pury.github.io/nrd/images/default.jpeg");
 		$("#node-size").val(nodeData.size);
-		pkoala.editor.id = nodeData.id;
+		pkoala.editor.id = parseInt(nodeData.id);
 		pkoala.editor.updateRelation();
 	};
 
@@ -78,7 +78,7 @@ window.pkoala = window.pkoala || {};
 
 		$("#form-relation input").on("change", function (item){
 			console.log("[form item]", this.value, this.dataset.nid);
-			pkoala.editor.saveLinks(this.dataset.nid, this.value);
+			pkoala.editor.saveLinks(parseInt(this.dataset.nid), this.value);
 		});
 
 	};
@@ -89,21 +89,32 @@ window.pkoala = window.pkoala || {};
 	pkoala.editor.saveLinks = function (to, relation)
 	{
 		var from = pkoala.editor.id;
+		var save = function () {
+			saveArchive();
+			drawChartData();			
+		};
 
-		for (var j in pkoala.chartData.links)
+		// 更新 或 删除
+		for (var j = 0; j < pkoala.chartData.links.length; j++)
 		{
 			var tempLink = pkoala.chartData.links[j];
 			if (tempLink.from != from || tempLink.to != to) continue;
-			pkoala.chartData.links[j].relation = value;
-			return;
+
+			if (relation == "") {
+				pkoala.chartData.links.splice(j, 1);
+			}
+			else {
+				pkoala.chartData.links[j].relation = relation;
+			}
+			return save();
 		}
 
+		// 新增
 		var id = getNewLinkId();
 		pkoala.chartData.links.push({
-			id: id, from: from, to: to, relation: relation, dashed: false
+			id: id, from: parseInt(from), to: parseInt(to), relation: relation, dashed: false
 		});
-		saveArchive();
-		drawChartData();
+		save();
 	}
 
 	/**
@@ -135,7 +146,7 @@ window.pkoala = window.pkoala || {};
 		}
 
 		console.log("[save]", pkoala.chartData);
-		parent.updateChartData();
+		updateChartData();
 		return false;
 	});
 
@@ -162,7 +173,7 @@ window.pkoala = window.pkoala || {};
 
 		pkoala.chartData.links = tempLinks;
 		pkoala.sidebar.setIndex(-1);
-		parent.updateChartData();
+		updateChartData();
 	});
 })();
 

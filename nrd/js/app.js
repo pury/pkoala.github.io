@@ -174,6 +174,15 @@ function doSet()
 	$("input:radio[name='inlineRadioOptions'][value='off']").prop('checked', !archive);
 }
 
+/**
+ * 
+ */
+var trimString = function (str) {
+	if (!str) return "";
+	if (str.length > 6) return str.slice(0, 6) + "...";
+	return str;
+}
+
 var watermark = "./watermark.png";
 
 $("#btn-watermark").click(function () {

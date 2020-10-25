@@ -36,7 +36,7 @@ window.pkoala = window.pkoala || {};
 			var nodeData = nodesData[i];
 			var item = temp.replace("{0}", active ? "active" : "");
 			item = item.replace("{1}", nodeData.image);
-			item = item.replace("{2}", nodeData.name);
+			item = item.replace("{2}", trimString(nodeData.name));
 			sidebarData += item;
 		}
 

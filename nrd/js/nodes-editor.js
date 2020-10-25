@@ -15,6 +15,11 @@ window.pkoala = window.pkoala || {};
 	 */
 	pkoala.editor.defaultData = {id: 999, name: "", image: "", role: "", size: "normal"};
 
+	/** 
+	 *  是否新增节点
+	 */
+	pkoala.editor.isNewNode = function () { return pkoala.selectedIndex < 0;}
+
 	/**
 	 * 初始化
 	 */
@@ -34,6 +39,7 @@ window.pkoala = window.pkoala || {};
 		$("#node-id").text(nodeData.id);
 		$("#node-name").val(nodeData.name);
 		$("#node-role").val(nodeData.role);
+		$("#node-name").parent().removeClass("has-error");
 
 		var imageUrl = nodeData.image;
 		if (imageUrl.indexOf("data:image") == 0) { imageUrl = ""}
@@ -42,6 +48,20 @@ window.pkoala = window.pkoala || {};
 		$("#node-size").val(nodeData.size);
 		pkoala.editor.id = parseInt(nodeData.id);
 		pkoala.editor.updateRelation();
+
+		var isNewNode = pkoala.editor.isNewNode();
+
+		if (isNewNode) 
+		{
+			$("#btn-delete").hide();
+			$("#btn-save").text("创建");
+
+		}
+		else
+		{
+			$("#btn-delete").show();
+			$("#btn-save").text("保存");
+		}
 	};
 
 	/**
@@ -53,7 +73,7 @@ window.pkoala = window.pkoala || {};
 		$("#form-relation").empty();
 		var id = pkoala.editor.id;
 
-		for (var i in pkoala.chartData.nodes)
+		for (var i = 0; i < pkoala.chartData.nodes.length; i++)
 		{
 			var tempNode = pkoala.chartData.nodes[i];
 			if (tempNode.id == pkoala.editor.id) continue;
@@ -69,7 +89,7 @@ window.pkoala = window.pkoala || {};
 				relation = tempLink.relation;	
 			}
 
-			var content = temp.replace("{0}", tempNode.name);
+			var content = temp.replace("{0}", trimString(tempNode.name));
 			content = content.replace("{1}", relation);
 			content = content.replace("{2}", tempNode.image);
 			content = content.replace("{3}", tempNode.id);
@@ -78,7 +98,8 @@ window.pkoala = window.pkoala || {};
 
 		$("#form-relation input").on("change", function (item){
 			console.log("[form item]", this.value, this.dataset.nid);
-			pkoala.editor.saveLinks(parseInt(this.dataset.nid), this.value);
+			if (pkoala.editor.isNewNode()) return;
+			pkoala.editor.saveLink(parseInt(this.dataset.nid), this.value);
 		});
 
 	};
@@ -86,7 +107,7 @@ window.pkoala = window.pkoala || {};
 	/**
 	 * 保存关系
 	 */
-	pkoala.editor.saveLinks = function (to, relation)
+	pkoala.editor.saveLink = function (to, relation)
 	{
 		var from = pkoala.editor.id;
 		var save = function () {
@@ -111,10 +132,20 @@ window.pkoala = window.pkoala || {};
 
 		// 新增
 		var id = getNewLinkId();
-		pkoala.chartData.links.push({
+		(relation != "") && pkoala.chartData.links.push({
 			id: id, from: parseInt(from), to: parseInt(to), relation: relation, dashed: false
 		});
 		save();
+	}
+
+	/**
+	 * 保存所有关系
+	 */
+	pkoala.editor.saveLinks = function ()
+	{
+		$("#form-relation input").each(function (item){
+			pkoala.editor.saveLink(parseInt($(this).data("nid")), $(this).val());
+		});
 	}
 
 	/**
@@ -122,7 +153,7 @@ window.pkoala = window.pkoala || {};
 	 */
 	$("#btn-save").click(function () {
 		var nodeData = {
-			id: $("#node-id").text(),
+			id: parseInt($("#node-id").text()),
 			name: $("#node-name").val(),
 			// image: $("#node-image").val(),
 			image: $("#node-image-show").attr('src'),
@@ -130,9 +161,16 @@ window.pkoala = window.pkoala || {};
 			size: $("#node-size").val(),
 		};
 
+		if (nodeData.name == "") 
+		{
+			$("#node-name").parent().addClass("has-error");
+			$("#node-name").focus();
+			return;
+		}
+
 		var check = false;
 
-		for (var i in pkoala.chartData.nodes)
+		for (var i = 0; i < pkoala.chartData.nodes.length; i++)
 		{
 			let tempNode = pkoala.chartData.nodes[i];
 			if (tempNode.id != parseInt(nodeData.id)) continue;
@@ -143,6 +181,7 @@ window.pkoala = window.pkoala || {};
 		if (!check)
 		{
 			pkoala.chartData.nodes.push(nodeData);
+			pkoala.editor.saveLinks();
 		}
 
 		console.log("[save]", pkoala.chartData);
@@ -192,6 +231,15 @@ function showTab(id)
 $("#btn-upload").click(function () {
 	$("#node-image-source").click();
 	return false;
+});
+
+$("#node-image").on("change", function () {
+	$("#node-image-show").attr("src", this.value)
+});
+
+$("#node-name").on("change", function () {
+	if (this.value == "") return;
+	$("#node-name").parent().removeClass("has-error");
 });
 
 $("#node-image-source").on("change", function (e) {

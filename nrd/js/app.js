@@ -31,7 +31,7 @@ var drawChartData = function () {
 }
 
 var updateChartData = function (launch) {
-    pkoala.sidebar.init(pkoala.chartData); 
+    // pkoala.sidebar.init(pkoala.chartData); 
     // if (!launch) return;
     drawChartData();
     saveArchive();
@@ -175,11 +175,12 @@ function doSet()
 }
 
 /**
- * 
+ * 截取字符串
  */
-var trimString = function (str) {
+var trimString = function (str, len) {
+	len = len || 6;
 	if (!str) return "";
-	if (str.length > 6) return str.slice(0, 6) + "...";
+	if (str.length > len) return str.slice(0, len) + "...";
 	return str;
 }
 

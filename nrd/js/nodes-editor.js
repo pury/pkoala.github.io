@@ -165,7 +165,7 @@ window.pkoala = window.pkoala || {};
 		{
 			$("#node-name").parent().addClass("has-error");
 			$("#node-name").focus();
-			return;
+			return false;
 		}
 
 		var check = false;

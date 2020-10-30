@@ -27,7 +27,7 @@ pkoala.tools = false;
 pkoala.archive = false;
 
 var drawChartData = function () {
-	$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.chartData}, "*");
+	$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.db.data.config}, "*");
 }
 
 var updateChartData = function (launch) {
@@ -50,7 +50,7 @@ var checkSet = function () {
 		localStorage.setItem(PKOALA_MODE, this.value);
 		pkoala.mode = this.value == "on" ? 0 : 1;
 		$("#page-chart")[0].contentWindow.postMessage({type: 'mode', data: {mode: pkoala.mode}}, "*");
-		$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.chartData}, "*");
+		$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.db.data.config}, "*");
 	});
 	$("input:radio[name='inlineRadioOptions-tools']").change(function (item) {
 		localStorage.setItem(PKOALA_TOOLS, this.value);
@@ -73,6 +73,7 @@ var checkSet = function () {
 var checkInit = function () {
 	initFlag++;
 	if (initFlag < 2) return;
+	pkoala.editor.init();
 	updateChartData();
 	$('#loading').modal('hide');
 };
@@ -93,56 +94,23 @@ $(document).ready(function(){
 	if (!cacheData) 
 	{
 		$.getJSON("./config.min.json",function(result){
-	        window.pkoala.chartData = result;
+	        window.pkoala.db.init({
+	        	system: {},
+	        	config: result
+	        });
 			checkInit();
 	    });
 		return;
 	}
 
-    window.pkoala.chartData = cacheData;
+    window.pkoala.db.init(cacheData);
 	checkInit();
 });
 
 
-var getNewNodeId = function () {
-	var id = -1;
-	pkoala.chartData.nodes.forEach(function (item) { 
-		id = Math.max(id, item.id)
-	});
-	return id + 1;
-}
-
-var getNewLinkId = function () {
-	var id = -1;
-	pkoala.chartData.links.forEach(function (item) { 
-		id = Math.max(id, item.id)
-	});
-	return id + 1;
-}
-
-var getNodeDataById = function (id) {
-	for (var i in pkoala.chartData.nodes)
-	{
-		var node = pkoala.chartData.nodes[i];
-		if (node.id == id) return pkoala.chartData.nodes[i];
-	}
-
-	return null;
-}
-
-var getLinkDataById = function (id) {
-	for (var i in pkoala.chartData.links)
-	{
-		var link = pkoala.chartData.links[i];
-		if (link.id == id) return pkoala.chartData.links[i];
-	}
-
-	return null;
-}
-
 var saveArchive = function () {
     if (!pkoala.archive) return;
-	localStorage.setItem(PKOALA_CHART, JSON.stringify(pkoala.chartData));
+	localStorage.setItem(PKOALA_CHART, JSON.stringify(pkoala.db.data.config));
 };
 
 
@@ -188,7 +156,7 @@ var watermark = "./watermark.png";
 
 $("#btn-watermark").click(function () {
 	$("#page-chart")[0].contentWindow.postMessage({type: 'watermark', data: {watermark: watermark}}, "*");
-	$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.chartData}, "*");
+	$("#page-chart")[0].contentWindow.postMessage({type: 'draw', data: pkoala.db.data.config}, "*");
 	$("#setting").modal("hide");
 	return false;	
 })

@@ -31,6 +31,11 @@ window.pkoala = window.pkoala || {};
 	pkoala.editor.NODE_FAST_TR = '<tr id="editor-fast-content"><td colspan="8"><div><fieldset class="col-md-6 inline-edit-col-left"><div class="inline-edit-title"><label>快速编辑</label></div><div class="inline-edit-info"><div class="inline-edit-group" name="e-id"><label class="col-sm-2">编号</label><div class="col-sm-10 inline-edit-id"><span name>0</span></div></div><div class="inline-edit-group" name="e-name"><label class="col-sm-2">名称</label><div class="col-sm-10"><input type="text" class="form-control" name="name" placeholder="必选项"></div></div><div class="inline-edit-group" name="e-image"><label class="col-sm-2">图像</label><div class="col-sm-10"><input type="text" class="form-control" name="image" placeholder="https://"></div></div><div class="inline-edit-group" name="e-role"><label class="col-sm-2">简介</label><div class="col-sm-10"><input type="text" class="form-control" name="role" placeholder=""></div></div><div class="inline-edit-group" name="e-size"><label class="col-sm-2">尺寸</label><div class="col-sm-10 inline-edit-size"><select name="size"><option value="normal">默认</option><option value="large">大</option><option value="small">小</option></select></div></div></div></fieldset><fieldset class="col-md-6"><div class="inline-edit-title"><label>关系</label></div><div class="inline-edit-links row pre-scrollable"></div></fieldset></div><div class="inline-edit-action"><div class="col-md-6"><button class="btn btn-default btn-cancel">取消</button></div><div class="col-md-6 text-right"><button class="btn btn-primary btn-update">更新</button></div></div></td></tr>';
 
 	/**
+	 * 备份数据，用于检测变化
+	 */
+	pkoala.editor.backupData = '';
+
+	/**
 	 * 初始化一次
 	 */
 	pkoala.editor.init = function ()
@@ -40,7 +45,7 @@ window.pkoala = window.pkoala || {};
 		$("#btn-delete").click(function () { pkoala.editor.deleteGroupNodes(); });
 		$("#btn-delete-all").click(function () { pkoala.editor.deleteNodes(); });
 		$("#btn-update").click(function () { pkoala.editor.update(); });
-		$("#btn-back").click(function () { $("#editor").slideUp(); });
+		$("#btn-back").click(function () { pkoala.editor.hide(); });
 		$("#editor thead input:checkbox").click(function () { pkoala.editor.selectNodes("thead"); });
 		$("#editor tfoot input:checkbox").click(function () { pkoala.editor.selectNodes("tfoot"); });
 	}
@@ -53,14 +58,31 @@ window.pkoala = window.pkoala || {};
 
 	}
 
-
 	/**
 	 * 显示编辑
 	 */
 	pkoala.editor.show = function () 
 	{
-		 $("#editor").slideDown();
-		 pkoala.editor.update();
+		var height = $(window).height();
+		$("#editor").slideDown();
+		pkoala.editor.backupData = JSON.stringify(pkoala.db.data);
+		pkoala.editor.update();
+		$(".editor-table").css("max-height", (height - $("#editor-head").height()) + "px");
+
+		// $(".editor-table").scroll(function () {
+		// 	console.log("[scroll]", $(".editor-table").scrollTop());
+		// 	console.log("[scroll thead]", $(".editor-table thead").scrollTop());
+		// });
+	}
+
+	/**
+	 * 退出编辑
+	 */
+	pkoala.editor.hide = function ()
+	{
+		$("#editor").slideUp(); 
+		if (pkoala.editor.backupData == JSON.stringify(pkoala.db.data)) return;
+		pkoala.chart.draw();
 	}
 
 	/**

@@ -13,7 +13,7 @@ window.pkoala = window.pkoala || {};
 	 */
 	pkoala.db.data = 
 	{
-		system: {}, // 系统设置
+		system: {mode: 0, tools: false}, // 系统设置
 		config: {nodes: [], links: []}  // 数据配置
 	}
 
@@ -22,7 +22,35 @@ window.pkoala = window.pkoala || {};
 	 */
 	pkoala.db.init = function (data) 
 	{
+
+		// Object.defineProperties(pkoala.db.data, {
+		// 	system: {
+		// 		// configurable: true, // 设置属性可以更改，默认为false
+		// 		set : function(value){ system = value; console.log('[system]', value); }
+		// 	},      
+		// 	config: {
+		// 		// configurable: true, // 设置属性可以更改，默认为false
+		// 		set : function(value){ config = value; console.log('[config]', value); }
+		// 	} 
+		// });
+
+		// Object.defineProperty(pkoala.db.data, 'config', {
+		//     set : function(value){
+		//                name = value;
+		//                 console.log('set: name:' + value)
+		//         }
+		// });
+
 		pkoala.db.data = data;
+	}
+
+	/**
+	 * 更新系统设置
+	 */
+	pkoala.db.updateSystem = function ()
+	{
+		pkoala.db.data.system.mode = pkoala.set.images == "on" ? 0 : 1;
+		pkoala.db.data.system.tools = pkoala.set.tools == "on";
 	}
 
 	/**

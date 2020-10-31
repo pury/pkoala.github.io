@@ -39,14 +39,14 @@ window.pkoala = window.pkoala || {};
 		$("input:radio[name='set-images']").change(function (item) {
 			localStorage.setItem(PKOALA_IMAGES, this.value);
 			pkoala.set.images = this.value;
-			pkoala.chart.updateMode();
+			pkoala.chart.updateMode(this.value == "on" ? 0 : 1);
 			pkoala.chart.draw();
 		});
 
 		$("input:radio[name='set-tools']").change(function (item) {
 			localStorage.setItem(PKOALA_TOOLS, this.value);
 			pkoala.set.tools = this.value ;
-			pkoala.chart.updateTools();
+			pkoala.chart.updateTools(pkoala.set.tools == "on");
 		});
 
 		$("input:radio[name='set-archive']").change(function (item) {

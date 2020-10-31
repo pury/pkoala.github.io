@@ -8,6 +8,8 @@ window.pkoala = window.pkoala || {};
 
 	pkoala.chart = {};
 
+	/** 初始化 */
+	pkoala.chart.CMD_INIT = "init";
 	/** 绘制 */
 	pkoala.chart.CMD_DRAW = "draw";
 	/** 导出 */
@@ -20,10 +22,20 @@ window.pkoala = window.pkoala || {};
 	pkoala.chart.CMD_MODE = "mode";
 
 	/**
+	 * 初始化
+	 */
+	pkoala.chart.init = function ()
+	{
+		pkoala.db.updateSystem();
+		pkoala.chart.postMessage(pkoala.chart.CMD_INIT, pkoala.db.data);
+	}
+
+	/**
 	 * 绘制
 	 */
 	pkoala.chart.draw = function ()
 	{
+		pkoala.db.updateSystem();
 		pkoala.chart.postMessage(pkoala.chart.CMD_DRAW, pkoala.db.data);
 	}
 
@@ -38,17 +50,17 @@ window.pkoala = window.pkoala || {};
 	/** 
 	 * 更新显示模式
 	 */
-	pkoala.chart.updateMode = function ()
+	pkoala.chart.updateMode = function (mode)
 	{
-		pkoala.chart.postMessage(pkoala.chart.CMD_MODE, pkoala.set.images == "on" ? 0 : 1);
+		pkoala.chart.postMessage(pkoala.chart.CMD_MODE, mode);
 	}
 
 	/** 
 	 * 更新显示小工具
 	 */
-	pkoala.chart.updateTools = function ()
+	pkoala.chart.updateTools = function (show)
 	{
-		pkoala.chart.postMessage(pkoala.chart.CMD_TOOLS, pkoala.set.tools == "on");
+		pkoala.chart.postMessage(pkoala.chart.CMD_TOOLS, show);
 	}
 
 	/** 

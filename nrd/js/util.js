@@ -21,7 +21,8 @@ window.pkoala = window.pkoala || {};
 	 * @param str 原始字符串
 	 * @param len 截取长度
 	 */
-	pkoala.util.trimString = function (str, len) {
+	pkoala.util.trimString = function (str, len) 
+	{
 		len = len || 6;
 		if (!str) return "";
 		if (str.length > len) return str.slice(0, len) + "...";

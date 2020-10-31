@@ -40,6 +40,7 @@ window.pkoala = window.pkoala || {};
 		$("#btn-delete").click(function () { pkoala.editor.deleteGroupNodes(); });
 		$("#btn-delete-all").click(function () { pkoala.editor.deleteNodes(); });
 		$("#btn-update").click(function () { pkoala.editor.update(); });
+		$("#btn-back").click(function () { $("#editor").slideUp(); });
 		$("#editor thead input:checkbox").click(function () { pkoala.editor.selectNodes("thead"); });
 		$("#editor tfoot input:checkbox").click(function () { pkoala.editor.selectNodes("tfoot"); });
 	}
@@ -50,6 +51,16 @@ window.pkoala = window.pkoala || {};
 	pkoala.editor.trigger = function ()
 	{
 
+	}
+
+
+	/**
+	 * 显示编辑
+	 */
+	pkoala.editor.show = function () 
+	{
+		 $("#editor").slideDown();
+		 pkoala.editor.update();
 	}
 
 	/**
@@ -125,7 +136,7 @@ window.pkoala = window.pkoala || {};
 		tr = tr.replace("{id}", nodeData.id);
 		tr = tr.replace("{name}", nodeData.name);
 		tr = tr.replace("{image}", nodeData.image);
-		tr = tr.replace("{role}", trimString(nodeData.role, 10));
+		tr = tr.replace("{role}", pkoala.util.trimString(nodeData.role, 10));
 		tr = tr.replace("{size}", nodeData.size);
 		tr = tr.replace("{relation}", pkoala.db.getNodeLinksData(nodeData.id).length + "条");
 		tr = tr.replace("{time}", currentTime);
@@ -222,6 +233,7 @@ window.pkoala = window.pkoala || {};
 		}
 
 		nodeFast.find(".btn-update").text("更新");
+		nodeFast.find(".has-error").removeClass("has-error");
 		nodeFast.show();
 	}
 

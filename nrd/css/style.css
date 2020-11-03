@@ -179,7 +179,7 @@
 	padding: 10px 0;
 	margin-bottom: 10px;
 	background-color: white;
-	height: 180px;
+	height: 250px;
 }
 
 .inline-edit-title {
@@ -194,7 +194,15 @@
 }
 
 #editor fieldset {
-	height: 230px;
+	height: 300px;
+}
+
+#editor .td-image {
+	border-radius: 50%;
+}
+
+#editor .inline-edit {
+	/*height: 230px;*/
 }
 
 .inline-edit-group .inline-edit-id {
@@ -205,6 +213,13 @@
 	margin-top: 8px;
 }
 
+.inline-edit-group .input-group-addon {
+	width: 20%;
+	font-size: 16px;
+	padding-left: 0;
+	padding-right: 0;
+}
+
 .inline-edit-size select{
 	/*width: 100%;*/
 }
@@ -212,4 +227,19 @@
 #editor img {
 	width: 50px;
 	height: 50px;
+}
+
+.inline-edit-action {
+	/*height: 34px;*/
+}
+
+.inline-edit-img .col-sm-9{
+	padding-left: 0;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.inline-edit-img .col-sm-3 {
+	padding-left: 0;
+	margin-top: 15px;
 }

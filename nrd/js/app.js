@@ -30,7 +30,7 @@ pkoala.pageChartReady = function ()
 window.onload = function () { 
 	console.log('[doc onload]');
 	var iframeItem = document.getElementById("page-chart");
-	iframeItem.style.height = Math.max(1000, $(window).height() - 60) + 'px';
+	iframeItem.style.height = Math.max(800, $(window).height() - 60) + 'px';
 	pkoala.init();
 }
 

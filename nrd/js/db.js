@@ -190,7 +190,7 @@ window.pkoala = window.pkoala || {};
 	 */
 	pkoala.db.updateLink = function (linkData)
 	{
-		var link = pkoala.db.findLink(linkData);
+		var link = pkoala.db.findLink(linkData.id);
 		if (!link) return;
 
 		for (var i in linkData)

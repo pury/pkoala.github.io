@@ -69,7 +69,7 @@ window.pkoala = window.pkoala || {};
 	 */
 	pkoala.chart.setWatermark = function (watermark)
 	{
-		pkoala.chart.postMessage(pkoala.chart.CMD_WATERMARK, watermark);
+		pkoala.chart.postMessage(pkoala.chart.CMD_WATERMARK, {watermark: watermark});
 	}
 
 

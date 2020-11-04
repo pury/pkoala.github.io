@@ -54,7 +54,7 @@ window.pkoala = window.pkoala || {};
 			pkoala.set.archive = this.value ;
 		});
 
-		$("#bbtn-set-save").click(function () {
+		$("#btn-set-save").click(function () {
 			pkoala.chart.setWatermark(pkoala.set.watermark);
 			pkoala.chart.draw();
 			$("#setting").modal("hide");

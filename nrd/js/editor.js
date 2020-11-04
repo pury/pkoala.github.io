@@ -13,7 +13,7 @@ window.pkoala = window.pkoala || {};
 	/**
 	 * 默认节点
 	 */
-	pkoala.editor.defaultData = {id: 999, name: "", image: "", role: "", size: "normal"};
+	pkoala.editor.defaultData = {id: 999, name: "", image: "https://pury.github.io/nrd/images/default.jpeg", role: "", size: "normal"};
 
 	/** 
 	 *  是否新增节点
@@ -63,11 +63,12 @@ window.pkoala = window.pkoala || {};
 	 */
 	pkoala.editor.show = function () 
 	{
-		var height = $(window).height();
+		// var height = $(window).height();
+		var height = $("#editor").height();
 		$("#editor").slideDown();
 		pkoala.editor.backupData = JSON.stringify(pkoala.db.data);
 		pkoala.editor.update();
-		$(".editor-table").css("max-height", (height - $("#editor-head").height()) + "px");
+		$(".editor-table").css("max-height", (height - 60 - $("#editor-head").height()) + "px");
 
 		// $(".editor-table").scroll(function () {
 		// 	console.log("[scroll]", $(".editor-table").scrollTop());
@@ -158,7 +159,7 @@ window.pkoala = window.pkoala || {};
 		row.find("[name='n-id']").text(nodeData.id);
 		row.find("[name='n-name']").text(nodeData.name);
 		row.find("[name='n-image'] img").attr("src", nodeData.image);
-		row.find("[name='n-role']").text(nodeData.role);
+		row.find("[name='n-role']").text(pkoala.util.trimString(nodeData.role, 10));
 		row.find("[name='n-size']").text(nodeData.size);
 		row.find("[name='n-relation']").text(pkoala.db.getNodeLinksData(nodeData.id).length + "条");
 		row.find("[name='n-time']").text(currentTime);
@@ -245,7 +246,8 @@ window.pkoala = window.pkoala || {};
 	          reader.readAsDataURL(file); // 读取文件
 	          // 渲染文件
 	          reader.onload = function (arg) {
-	            nodeFast.find("[name='e-image'] img").attr("src", arg.target.result)
+	            nodeFast.find("[name='e-image'] img").attr("src", arg.target.result);
+	            nodeFast.find("input[name='image']").val(file.name);
 	          }
 	        } else {
 	          alert('仅支持不超过10M的图片');
@@ -289,7 +291,7 @@ window.pkoala = window.pkoala || {};
 		var nodeData = pkoala.db.findNode(nodeId);
 		nodeFast.find("[name=e-id] span[name='e-id-num']").text(nodeId);
 		nodeFast.find("[name=e-name] input").val(nodeData.name);
-		nodeFast.find("[name=e-image] input[name='image']").val(nodeData.image);
+		nodeFast.find("[name=e-image] input[name='image']").val(nodeData.image.indexOf("http") == 0 ? nodeData.image : "");
 		nodeFast.find("[name=e-image] img").attr("src", nodeData.image);
 		nodeFast.find("[name=e-role] input").val(nodeData.role);
 		nodeFast.find("[name=e-size] select").val(nodeData.size);
